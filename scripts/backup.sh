@@ -5,8 +5,11 @@
 # Professional backup solution
 # ===============================================
 
-# Borg configuratie
-BORG_REPO="ssh://u465138@u465138.your-storagebox.de:23/./backup/main_repo"
+# Borg configuratie - EDIT THESE VALUES
+STORAGE_USER="u123456"
+STORAGE_HOST="u123456.your-storagebox.de"
+STORAGE_PORT="23"
+BORG_REPO="ssh://${STORAGE_USER}@${STORAGE_HOST}:${STORAGE_PORT}/./backup/main_repo"
 
 # Wat wordt gebackupt - VOLLEDIGE MACHINE HERSTEL
 PATHS_TO_BACKUP="/home /etc /root /var /opt /usr/local"
@@ -33,9 +36,10 @@ EXCLUDE_PATTERNS=(
 # Bewaarbeleid: 1 maand
 PRUNE_OPTIONS="--keep-daily 30"
 
-# Wachtwoord en SSH setup
+# Wachtwoord en SSH setup - EDIT PASSWORD IN /etc/borg_storage.conf
+STORAGE_PASS=$(grep STORAGE_PASS /etc/borg_storage.conf | cut -d'=' -f2)
 export BORG_PASSPHRASE=$(cat /etc/borg_passphrase.txt)
-export BORG_RSH="sshpass -p W8Rj8MWeLSmPPcKM ssh -4 -o StrictHostKeyChecking=no -p 23"
+export BORG_RSH="sshpass -p ${STORAGE_PASS} ssh -4 -o StrictHostKeyChecking=no -p ${STORAGE_PORT}"
 
 echo "--- Backup Start: $(hostname) - $(date) ---"
 

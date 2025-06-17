@@ -5,9 +5,9 @@
 # Dit script configureert automatisch borg backup
 # ===============================================
 
-# CONFIGURATIE - ALLEEN DIT DEEL AANPASSEN!
-STORAGE_BOX_USER="u465138"
-STORAGE_BOX_HOST="u465138.your-storagebox.de"
+# CONFIGURATIE - EDIT THESE VALUES
+STORAGE_BOX_USER="u123456"
+STORAGE_BOX_HOST="u123456.your-storagebox.de"
 STORAGE_BOX_PORT="23"
 
 # ===============================================
@@ -29,18 +29,21 @@ pause_if_debug() {
 
 echo "🚀 Borg Backup Auto-Installer gestart..."
 
-# Voor testing - gebruik storagebox wachtwoord
-if [ "$DEBUG_MODE" = "true" ]; then
-    BORG_PASSWORD="W8Rj8MWeLSmPPcKM"
-    echo "🔑 DEBUG: Wachtwoord automatisch ingesteld"
-else
-    echo "🔑 Voer het Borg wachtwoord in (wordt niet getoond):"
-    read -s BORG_PASSWORD
-    echo ""
-    if [ -z "$BORG_PASSWORD" ]; then
-        echo "❌ Geen wachtwoord ingevoerd. Script gestopt."
-        exit 1
-    fi
+# Vraag om wachtwoord
+echo "🔑 Voer het Borg wachtwoord in (wordt niet getoond):"
+read -s BORG_PASSWORD
+echo ""
+if [ -z "$BORG_PASSWORD" ]; then
+    echo "❌ Geen wachtwoord ingevoerd. Script gestopt."
+    exit 1
+fi
+
+echo "🔑 Voer het Storage Box SSH wachtwoord in:"
+read -s STORAGE_PASS
+echo ""
+if [ -z "$STORAGE_PASS" ]; then
+    echo "❌ Geen SSH wachtwoord ingevoerd. Script gestopt."
+    exit 1
 fi
 
 # Valideer configuratie
@@ -97,7 +100,6 @@ pause_if_debug
 
 # 4. Test SSH verbinding
 echo "📋 STAP 4: SSH verbinding testen..."
-STORAGE_PASS="W8Rj8MWeLSmPPcKM"
 
 echo "🔐 Testing SSH connection with timeout..."
 export BORG_RSH="sshpass -p ${STORAGE_PASS} ssh -4 -o StrictHostKeyChecking=no -p ${STORAGE_BOX_PORT}"
@@ -156,8 +158,11 @@ if [[ "$COPY_SCRIPTS" =~ ^[Yy]$ ]]; then
     chmod +x ${BACKUP_SCRIPT}
     
     # Update script with current configuration
-    sed -i "s/u465138/${STORAGE_BOX_USER}/g" ${BACKUP_SCRIPT}
-    sed -i "s/W8Rj8MWeLSmPPcKM/${STORAGE_PASS}/g" ${BACKUP_SCRIPT}
+    sed -i "s/u123456/${STORAGE_BOX_USER}/g" ${BACKUP_SCRIPT}
+    
+    # Create storage config file
+    echo "STORAGE_PASS=${STORAGE_PASS}" > /etc/borg_storage.conf
+    chmod 600 /etc/borg_storage.conf
     
     echo "✅ Backup script installed and configured"
 else

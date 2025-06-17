@@ -7,11 +7,11 @@
 
 set -e
 
-# Configuration
-STORAGE_USER="u465138"
-STORAGE_HOST="u465138.your-storagebox.de"
+# Configuration - EDIT THESE VALUES
+STORAGE_USER="u123456"
+STORAGE_HOST="u123456.your-storagebox.de"
 STORAGE_PORT="23"
-STORAGE_PASS="W8Rj8MWeLSmPPcKM"
+STORAGE_PASS=$(grep STORAGE_PASS /etc/borg_storage.conf | cut -d'=' -f2 2>/dev/null || echo "PASSWORD_NOT_SET")
 BORG_REPO="ssh://${STORAGE_USER}@${STORAGE_HOST}:${STORAGE_PORT}/./backup/main_repo"
 RESTORE_TARGET="/tmp/restore"
 

@@ -1,0 +1,5 @@
+# Borg Backup Storage Configuration
+# Copy this to /etc/borg_storage.conf and edit with your credentials
+
+# Hetzner Storage Box SSH Password
+STORAGE_PASS=your_ssh_password_here
