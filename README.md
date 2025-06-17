@@ -1,6 +1,6 @@
 # 🗄️ Borg Backup Solution
 
-Automated backup system using BorgBackup with smart disaster recovery.
+Automated backup system using BorgBackup with smart disaster recovery for Hetzner Linux servers.
 
 ## What it does
 
@@ -77,9 +77,11 @@ borg extract ssh://USERNAME@HOST:23/./backup/main_repo::ARCHIVE_NAME --target /t
 
 ## Requirements
 
-- Ubuntu/Debian or CentOS/RHEL
-- SSH access to remote storage
+- Hetzner Linux server (Ubuntu/Debian or CentOS/RHEL)
+- SSH access to Hetzner Storage Box (port 23)
 - Root privileges
+
+**Important**: Hetzner Storage Box uses SSH on port 23, not the standard port 22. The scripts use IPv4 (`-4` flag) because IPv6 connections may fail on some configurations.
 
 ## Security
 
@@ -110,9 +112,11 @@ Most issues are SSH connectivity or storage space problems.
 
 ## Credits
 
-Created by **Rob Brinkke** in collaboration with Claude Code ❤️
+❤️ Created by Rob ❤️ Claude Code ❤️
 
-A practical Dutch approach to backup solutions - no nonsense, just working code.
+This procedure is specifically designed for backing up and restoring Hetzner Linux servers. A practical Dutch approach to backup solutions - no nonsense, just working code.
+
+Special thanks to the community for IPv6/port configuration insights!
 
 ## License
 
