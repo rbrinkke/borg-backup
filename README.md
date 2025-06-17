@@ -110,7 +110,6 @@ tail -f /var/log/borg_backup.log
 
 Most issues are SSH connectivity or storage space problems.
 
-## Credits
 
 ❤️ Created by Rob ❤️ Claude Code ❤️
 
